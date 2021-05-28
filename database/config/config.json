@@ -1,0 +1,32 @@
+{
+  "development": {
+    "username": "root",
+    "password": "0000",
+    "database": "trb-t",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "define": {
+      "timestamps": false
+    }
+  },
+  "test": {
+    "username": "root",
+    "password": "0000",
+    "database": "trb-t",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "define": {
+      "timestamps": false
+    }
+  },
+  "production": {
+    "username": "root",
+    "password": null,
+    "database": "trb-t",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "define": {
+      "timestamps": false
+    }
+  }
+}
