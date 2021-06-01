@@ -6,4 +6,5 @@ You have to have installed mysql server on your machine and just after that runn
 
 mysql installation (install both server and workbench)
 server => https://dev.mysql.com/downloads/mysql/
+
 workbench => https://dev.mysql.com/downloads/workbench/
