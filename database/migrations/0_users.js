@@ -23,6 +23,15 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: true,
       },
+      verification_code: {
+        type: Sequelize.STRING(100),
+        allowNull: true,
+      },
+      is_verified: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
     });
   },
   down: async (queryInterface) => {

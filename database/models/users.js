@@ -22,6 +22,15 @@ module.exports = (sequelize, DataType) => {
       type: DataType.TEXT,
       allowNull: true,
     },
+    verification_code: {
+      type: DataType.STRING(100),
+      allowNull: true,
+    },
+    is_verified: {
+      type: DataType.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
   });
 
   usersTable.associate = (models) => {
