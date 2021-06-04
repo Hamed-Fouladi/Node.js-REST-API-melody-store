@@ -25,6 +25,7 @@ module.exports = (sequelize, DataType) => {
     verification_code: {
       type: DataType.STRING(100),
       allowNull: true,
+      unique: true,
     },
     is_verified: {
       type: DataType.BOOLEAN,

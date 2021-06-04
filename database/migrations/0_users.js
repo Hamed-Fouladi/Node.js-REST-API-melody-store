@@ -26,6 +26,7 @@ module.exports = {
       verification_code: {
         type: Sequelize.STRING(100),
         allowNull: true,
+        unique: true,
       },
       is_verified: {
         type: Sequelize.BOOLEAN,
