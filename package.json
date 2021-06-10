@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "start:dev": "env NODE_ENV=development nodemon index.js",
+    "start:dev": "nodemon index.js",
     "lint": "eslint ./",
     "init:database": "sequelize db:drop && sequelize db:create && sequelize db:migrate && sequelize db:seed:all"
   },
