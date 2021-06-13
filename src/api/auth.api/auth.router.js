@@ -1,7 +1,9 @@
 const router = require('express').Router();
 const { signUp } = require('./auth.controller');
-const { checkDuplicateEmail } = require('../../middlewares');
+const { validate, authValidationChains, checkDuplicateEmail } = require('../../middlewares');
 
-router.post('/signup', checkDuplicateEmail, signUp);
+const baseRouterPath = '/auth';
+
+router.post(`${baseRouterPath}/signup`, authValidationChains(), validate, checkDuplicateEmail, signUp);
 
 module.exports = router;

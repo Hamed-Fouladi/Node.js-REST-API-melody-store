@@ -28,7 +28,7 @@
     "no-use-before-define": "off",
     "indent": [
       "error",
-      2
+      4
     ],
     "eqeqeq": "off"
   }

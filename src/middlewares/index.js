@@ -1,7 +1,9 @@
 const exampleMiddleware = require('./example.middleware');
-const { checkDuplicateEmail } = require('./auth.middleware');
+const { validate, authValidationChains, checkDuplicateEmail } = require('./auth.middleware');
 
 module.exports = {
-  exampleMiddleware,
-  checkDuplicateEmail,
+    exampleMiddleware,
+    checkDuplicateEmail,
+    authValidationChains,
+    validate,
 };
