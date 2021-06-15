@@ -1,5 +1,5 @@
-const { users } = require('../../database/models');
 const { body, validationResult } = require('express-validator');
+const { users } = require('../../database/models');
 
 module.exports = {
     checkDuplicateEmail: (req, res, next) => {
@@ -15,14 +15,14 @@ module.exports = {
             next();
         });
     },
-    authValidationChains: () => {
-        return [
-            // username must be an email
-            body('email').isEmail(),
-            // password must be at least 5 chars long
-            body('password').isLength({ min: 5 }),
-        ];
-    },
+    authValidationChains: () => [
+        // username must be an email
+        body('email').exists().withMessage('email is required field').isEmail()
+            .withMessage('incorrect email'),
+        // password must be at least 5 chars long
+        body('password').exists().withMessage('password is required field').isLength({ min: 5 })
+            .withMessage('must be at least 5 chars long'),
+    ],
     validate: (req, res, next) => {
         const errors = validationResult(req);
         if (errors.isEmpty()) {
