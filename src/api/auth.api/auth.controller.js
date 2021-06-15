@@ -6,21 +6,27 @@ const { users } = require('../../../database/models');
 
 module.exports = {
     signUp: (req, res) => {
-        const longToken = jwt.sign({ email: req.body.email }, config.secret);
-        const token = longToken.substr(longToken.length - 100, 100);
-        console.log('token length: ', token.length);
-        // const token = Math.floor((Math.random() * 100) + 54);
-        // Save User to Database
-        users.create({
-            email: req.body.email,
-            password: bcrypt.hashSync(req.body.password, 8),
-            verification_code: token,
-        }).then(() => {
-            res.status(201).send({ message: 'User was registered successfully!' });
-        }).catch((error) => {
-            res.status(500).send({ message: error.message });
-        });
-        sendConfirmationEmail(req.body.email, token);
+        try {
+            const longToken = jwt.sign({ email: req.body.email }, config.secret);
+            const token = longToken.substr(longToken.length - 100, 100);
+            console.log('token length: ', token.length);
+            // const token = Math.floor((Math.random() * 100) + 54);
+            // Save User to Database
+            users.create({
+                email: req.body.email,
+                password: bcrypt.hashSync(req.body.password, 8),
+                verification_code: token,
+            }).then(() => {
+                res.status(201).send({ message: 'User was registered successfully!' });
+            }).catch((error) => {
+                res.status(500).send({ message: error.message });
+            });
+            sendConfirmationEmail(req.body.email, token);
+        } catch (error) {
+            console.log(error);
+            res.status(500).send('Server error');
+        }
+
     },
     verifyUser: (req, res) => {
         users.findOne({
