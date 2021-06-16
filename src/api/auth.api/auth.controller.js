@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { v4: uuidv4 } = require('uuid');
 const { sendConfirmationEmail } = require('../../../config/nodemailerConfig');
 const config = require('../../../config/jwtConfig');
 const { users } = require('../../../database/models');
@@ -7,46 +8,51 @@ const { users } = require('../../../database/models');
 module.exports = {
     signUp: (req, res) => {
         try {
-            const longToken = jwt.sign({ email: req.body.email }, config.secret);
-            const token = longToken.substr(longToken.length - 100, 100);
-            console.log('token length: ', token.length);
+            const uiid = uuidv4();
+            // const longToken = jwt.sign({ email: req.body.email }, config.secret);
+            // const token = longToken.substr(longToken.length - 100, 100);
+            // console.log('token length: ', token.length);
             // const token = Math.floor((Math.random() * 100) + 54);
             // Save User to Database
             users.create({
                 email: req.body.email,
                 password: bcrypt.hashSync(req.body.password, 8),
-                verification_code: token,
+                verification_code: uiid,
             }).then(() => {
                 res.status(201).send({ message: 'User was registered successfully!' });
             }).catch((error) => {
                 res.status(500).send({ message: error.message });
             });
-            sendConfirmationEmail(req.body.email, token);
+            sendConfirmationEmail(req.body.email, uiid);
         } catch (error) {
             console.log(error);
             res.status(500).send('Server error');
         }
-
     },
     verifyUser: (req, res) => {
-        users.findOne({
-            verificationCode: req.params.verificationCode,
-        })
-            .then((user) => {
-                if (!user) {
-                    res.status(404).send({ message: 'User Not found.' });
-                }
-
-                user.is_verified = true;
-                user.save((error) => {
-                    if (error) {
-                        res.status(500).send({ message: error.message });
-                    }
-                });
+        try {
+            users.findOne({
+                verificationCode: req.params.verificationCode,
             })
-            .catch((error) => {
-                res.status(500).send({ message: error.message });
-            });
+                .then((user) => {
+                    if (!user) {
+                        res.status(404).send({ message: 'User Not found.' });
+                    }
+
+                    user.is_verified = true;
+                    user.save((error) => {
+                        if (error) {
+                            res.status(500).send({ message: error.message });
+                        }
+                    });
+                })
+                .catch((error) => {
+                    res.status(500).send({ message: error.message });
+                });
+        } catch (error) {
+            console.log(error);
+            res.status(500).send('Server error');
+        }
     },
     signIn: (req, res) => {
         users.findOne({
