@@ -37,16 +37,16 @@ module.exports = {
                         return res.status(400).send({ message: 'We were unable to find a user with that email. Make sure your Email is correct!' });
                     }
                     if (!user.is_verified) {
-                        user.update({
-                            verification_code: null,
-                            is_verified: true,
-                        });
                         const token = jwt.sign({ email: user.email, password: user.password }, config.secret, {
                             expiresIn: 86400, // 24 hours
                         });
+                        user.update({
+                            verification_code: null,
+                            is_verified: true,
+                            access_token: token,
+                        });
                         return res.status(200).send({
                             id: user.id,
-                            email: user.email,
                             accessToken: token,
                             message: 'Email is been Successfully verified',
                         });
@@ -57,42 +57,48 @@ module.exports = {
         }
     },
     signIn: (req, res) => {
-        users.findOne({
-            where: {
-                email: req.body.email,
-            },
-        })
-            .then(user => {
-                if (!user) {
-                    return res.status(404).send({ message: 'User Not found.' });
-                }
-                const passwordIsValid = bcrypt.compareSync(
-                    req.body.password,
-                    user.password,
-                );
-                if (!passwordIsValid) {
-                    return res.status(401).send({
-                        accessToken: null,
-                        message: 'Invalid Password!',
-                    });
-                }
-                if (user.is_verified !== true) {
-                    return res.status(403).send({
-                        accessToken: null,
-                        message: 'Please Verify Your Email to sign in!',
-                    });
-                }
-                const token = jwt.sign({ email: user.email, password: user.password }, config.secret, {
-                    expiresIn: 86400, // 24 hours
-                });
-                res.status(200).send({
-                    id: user.id,
-                    email: user.email,
-                    accessToken: token,
-                });
+        try {
+            users.findOne({
+                where: {
+                    email: req.body.email,
+                },
             })
-            .catch(error => {
-                res.status(500).send({ message: error.message });
-            });
+                .then(user => {
+                    if (!user) {
+                        return res.status(404).send({ message: 'User Not found.' });
+                    }
+                    const passwordIsValid = bcrypt.compareSync(
+                        req.body.password,
+                        user.password,
+                    );
+                    if (!passwordIsValid) {
+                        return res.status(401).send({
+                            accessToken: null,
+                            message: 'Invalid Password!',
+                        });
+                    }
+                    if (user.is_verified !== true) {
+                        return res.status(403).send({
+                            accessToken: null,
+                            message: 'Please Verify Your Email to sign in!',
+                        });
+                    }
+                    const token = jwt.sign({ email: user.email, password: user.password }, config.secret, {
+                        expiresIn: 86400, // 24 hours
+                    });
+                    user.update({
+                        access_token: token,
+                    });
+                    res.status(200).send({
+                        id: user.id,
+                        accessToken: token,
+                    });
+                })
+                .catch(error => {
+                    res.status(500).send({ message: error.message });
+                });
+        } catch (error) {
+            res.status(500).send({ message: error.message });
+        }
     },
 };
