@@ -8,22 +8,17 @@ const { users } = require('../../../database/models');
 module.exports = {
     signUp: (req, res) => {
         try {
-            const uiid = uuidv4();
-            // const longToken = jwt.sign({ email: req.body.email }, config.secret);
-            // const token = longToken.substr(longToken.length - 100, 100);
-            // console.log('token length: ', token.length);
-            // const token = Math.floor((Math.random() * 100) + 54);
-            // Save User to Database
+            const uuid = uuidv4();
             users.create({
                 email: req.body.email,
                 password: bcrypt.hashSync(req.body.password, 8),
-                verification_code: uiid,
+                verification_code: uuid,
             }).then(() => {
                 res.status(201).send({ message: 'User was registered successfully!' });
             }).catch((error) => {
                 res.status(500).send({ message: error.message });
             });
-            sendConfirmationEmail(req.body.email, uiid);
+            sendConfirmationEmail(req.body.email, uuid);
         } catch (error) {
             console.log(error);
             res.status(500).send('Server error');
@@ -32,26 +27,33 @@ module.exports = {
     verifyUser: (req, res) => {
         try {
             users.findOne({
-                verificationCode: req.params.verificationCode,
+                where: {
+                    verification_code: req.params.verificationCode,
+                },
             })
                 .then((user) => {
-                    if (!user) {
-                        res.status(404).send({ message: 'User Not found.' });
-                    }
 
-                    user.is_verified = true;
-                    user.save((error) => {
-                        if (error) {
-                            res.status(500).send({ message: error.message });
-                        }
-                    });
-                })
-                .catch((error) => {
-                    res.status(500).send({ message: error.message });
+                    if (!user) {
+                        return res.status(400).send({ message: 'We were unable to find a user with that email. Make sure your Email is correct!' });
+                    }
+                    if (!user.is_verified) {
+                        user.update({
+                            verification_code: null,
+                            is_verified: true,
+                        });
+                        const token = jwt.sign({ email: user.email }, config.secret, {
+                            expiresIn: 86400, // 24 hours
+                        });
+                        return res.status(200).send({
+                            id: user.id,
+                            email: user.email,
+                            accessToken: token,
+                            message: 'Email is been Successfully verified',
+                        });
+                    }
                 });
         } catch (error) {
-            console.log(error);
-            res.status(500).send('Server error');
+            res.status(500).send({ message: error.message });
         }
     },
     signIn: (req, res) => {
@@ -80,7 +82,7 @@ module.exports = {
                         message: 'Please Verify Your Email to sign in!',
                     });
                 }
-                const token = jwt.sign({ email: user.email }, config.secret, {
+                const token = jwt.sign({ email: user.email, password: user.password }, config.secret, {
                     expiresIn: 86400, // 24 hours
                 });
                 res.status(200).send({
