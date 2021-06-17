@@ -1,8 +1,8 @@
 {
   "development": {
     "username": "root",
-    "password": "0000",
-    "database": "trb-t",
+    "password": null,
+    "database": "vodafone_melody",
     "host": "127.0.0.1",
     "dialect": "mysql",
     "define": {
@@ -11,8 +11,8 @@
   },
   "test": {
     "username": "root",
-    "password": "0000",
-    "database": "trb-t",
+    "password": null,
+    "database": "vodafone_melody",
     "host": "127.0.0.1",
     "dialect": "mysql",
     "define": {
