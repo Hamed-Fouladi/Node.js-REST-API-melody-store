@@ -41,7 +41,7 @@ module.exports = {
                             verification_code: null,
                             is_verified: true,
                         });
-                        const token = jwt.sign({ email: user.email }, config.secret, {
+                        const token = jwt.sign({ email: user.email, password: user.password }, config.secret, {
                             expiresIn: 86400, // 24 hours
                         });
                         return res.status(200).send({
