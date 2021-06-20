@@ -1,6 +1,14 @@
 const router = require('express').Router();
-const { signUp, signIn, verifyUser } = require('./auth.controller');
-const { validate, authValidationChains, checkDuplicateEmail } = require('../../middlewares');
+const {
+    signUp,
+    signIn,
+    verifyUser,
+} = require('./auth.controller');
+const {
+    validate,
+    authValidationChains,
+    checkDuplicateEmail,
+} = require('../../middlewares');
 
 const baseRouterPath = '/auth';
 

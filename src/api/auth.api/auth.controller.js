@@ -37,7 +37,7 @@ module.exports = {
                         return res.status(400).send({ message: 'We were unable to find a user with that email. Make sure your Email is correct!' });
                     }
                     if (!user.is_verified) {
-                        const token = jwt.sign({ id: user.id }, config.secret, {
+                        const token = jwt.sign({ userId: user.id }, config.secret, {
                             expiresIn: 86400, // 24 hours
                         });
                         user.update({
@@ -83,7 +83,7 @@ module.exports = {
                             message: 'Please Verify Your Email to sign in!',
                         });
                     }
-                    const token = jwt.sign({ id: user.id }, config.secret, {
+                    const token = jwt.sign({ userId: user.id }, config.secret, {
                         expiresIn: 86400, // 24 hours
                     });
                     user.update({

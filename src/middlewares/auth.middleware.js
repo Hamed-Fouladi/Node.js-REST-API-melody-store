@@ -1,4 +1,6 @@
 const { body, validationResult } = require('express-validator');
+const jwt = require('jsonwebtoken');
+const { secret } = require('../../config/jwtConfig');
 const { users } = require('../../database/models');
 
 module.exports = {
@@ -33,6 +35,17 @@ module.exports = {
 
         return res.status(422).json({
             errors: extractedErrors,
+        });
+    },
+    jwtVerify: (req, res, next) => {
+        const authHeader = req.headers.authorization;
+        const token = authHeader && authHeader.split(' ')[1];
+        if (!token) return res.sendStatus(401);
+
+        jwt.verify(token, secret, (err, user) => {
+            if (err) return res.sendStatus(403);
+            req.user = user;
+            next();
         });
     },
 };
