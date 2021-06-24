@@ -21,7 +21,7 @@ module.exports = {
             sendConfirmationEmail(req.body.email, uuid);
         } catch (error) {
             console.log(error);
-            res.status(500).send('Server error');
+            res.status(500).send({ message: error.message });
         }
     },
     verifyUser: (req, res) => {
@@ -100,5 +100,19 @@ module.exports = {
         } catch (error) {
             res.status(500).send({ message: error.message });
         }
+    },
+    logOut: (req, res) => {
+        users.findOne({
+            where: {
+                id: req.user.userId,
+            },
+        }).then((user) => {
+            user.update({
+                access_token: null,
+            });
+            res.status(200).json({ message: 'successfully logged out.' });
+        }).catch((error) => {
+            res.status(500).send({ message: error.message });
+        });
     },
 };
