@@ -102,28 +102,17 @@ module.exports = {
         }
     },
     logOut: (req, res) => {
-        try {
-            users.findOne({
-                where: {
-                    id: req.user.userId,
-                },
-            }).then((user) => {
-                const tokenDB = user.access_token;
-                const tokenUser = req.headers.authorization.split(' ')[1];
-                // jwt.destroy(token);
-                if (tokenDB !== null && tokenDB.indexOf(tokenUser) !== -1) {
-                    user.update({
-                        access_token: null,
-                    });
-                    res.status(200).json({ message: 'successfully logged out.' });
-                } else {
-                    return res.status(401).json({ message: 'Not authorized' });
-                }
-            }).catch((error) => {
-                res.status(500).send({ message: error.message });
+        users.findOne({
+            where: {
+                id: req.user.userId,
+            },
+        }).then((user) => {
+            user.update({
+                access_token: null,
             });
-        } catch (error) {
+            res.status(200).json({ message: 'successfully logged out.' });
+        }).catch((error) => {
             res.status(500).send({ message: error.message });
-        }
+        });
     },
 };
