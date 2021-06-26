@@ -23,7 +23,7 @@ module.exports = (sequelize, DataType) => {
   });
 
   categoriesMelodies.associate = (models) => {
-    categoriesMelodies.belongsTo(models.genres, { foreignKey: { name: 'fk_melodies_id', allowNull: false }, foreignKeyConstraint: true });
+    categoriesMelodies.belongsTo(models.melodies, { foreignKey: { name: 'fk_melodies_id', allowNull: false }, foreignKeyConstraint: true });
     categoriesMelodies.belongsTo(models.genres, { foreignKey: { name: 'fk_categories_id', allowNull: false }, foreignKeyConstraint: true });
   };
 
