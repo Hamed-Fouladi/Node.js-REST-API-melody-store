@@ -41,6 +41,7 @@ module.exports = (sequelize, DataType) => {
 
   melodies.associate = (models) => {
     melodies.hasMany(models.my_melodies, { foreignKey: { name: 'fk_melodies_id', allowNull: false }, foreignKeyConstraint: true });
+    melodies.hasMany(models.categories_melodies, { foreignKey: { name: 'fk_melodies_id', allowNull: false }, foreignKeyConstraint: true });
   };
 
   return melodies;
