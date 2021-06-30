@@ -1,10 +1,10 @@
 const router = require('express').Router();
 
 const {
-    getProfileData
+  getProfileData
 } = require('./user.controller');
 const {
-    jwtVerify,
+  jwtVerify,
 } = require('../../middlewares');
 
 const baseRouterPath = '/user';

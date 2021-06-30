@@ -1,15 +1,15 @@
 const router = require('express').Router();
 const {
-    signUp,
-    signIn,
-    verifyUser,
-    logOut,
+  signUp,
+  signIn,
+  verifyUser,
+  logOut,
 } = require('./auth.controller');
 const {
-    validate,
-    authValidationChains,
-    checkDuplicateEmail,
-    jwtVerify,
+  validate,
+  authValidationChains,
+  checkDuplicateEmail,
+  jwtVerify,
 } = require('../../middlewares');
 
 const baseRouterPath = '/auth';
