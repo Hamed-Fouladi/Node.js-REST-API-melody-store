@@ -1,4 +1,5 @@
-const { categories, genres, melodies, categories_melodies } = require('../../../database/models');
+const { categories, genres, melodies, categories_melodies, my_melodies } = require('../../../database/models');
+const Op = require('sequelize').Op;
 
 module.exports = {
   getGenresWithCategories: (req, res) => {
@@ -14,10 +15,15 @@ module.exports = {
     try {
       const { id } = req.params;
       if (isNaN(id)) return res.status(400).send('"category id" should be a number');
-      const categoryMelodies = await categories_melodies.findAll({ where: { fk_categories_id: id } });
-      const melodiesId = categoryMelodies.map((melody) => melody.fk_melodies_id);
-
-      const result = await melodies.findAll({ where: { id: melodiesId } });
+      const result = await melodies.findAll({
+        include: [{
+          model: categories_melodies,
+          where: {
+            fk_categories_id: { [Op.eq]: id },
+          },
+          attributes: [],
+        }],
+      });
       return res.status(200).json({ Melodies: result });
     } catch (error) {
       console.log(error);
