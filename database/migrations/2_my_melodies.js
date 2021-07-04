@@ -29,7 +29,7 @@ module.exports = {
       charges: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        unique: true,
+        // unique: true,
       },
       purchase_date: {
         type: Sequelize.BIGINT,
