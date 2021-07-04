@@ -1,5 +1,6 @@
+const { Op } = require('sequelize');
 const { categories, genres, melodies, categories_melodies, my_melodies } = require('../../../database/models');
-const Op = require('sequelize').Op;
+
 
 module.exports = {
   getGenresWithCategories: (req, res) => {
