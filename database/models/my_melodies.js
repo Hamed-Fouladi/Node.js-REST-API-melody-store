@@ -5,7 +5,7 @@ module.exports = (sequelize, DataType) => {
       autoIncrement: true,
       primaryKey: true,
     },
-    fk_users_id: {
+    fk_user_id: {
       type: DataType.INTEGER,
       allowNull: false,
     },
@@ -16,7 +16,7 @@ module.exports = (sequelize, DataType) => {
     charges: {
       type: DataType.INTEGER,
       allowNull: false,
-      unique: true,
+      // unique: true,
     },
     purchase_date: {
       type: DataType.BIGINT,
@@ -34,7 +34,7 @@ module.exports = (sequelize, DataType) => {
   });
 
   myMelodies.associate = (models) => {
-    myMelodies.belongsTo(models.users, { foreignKey: { name: 'fk_users_id', allowNull: false }, foreignKeyConstraint: true });
+    myMelodies.belongsTo(models.users, { foreignKey: { name: 'fk_user_id', allowNull: false }, foreignKeyConstraint: true });
     myMelodies.belongsTo(models.melodies, { foreignKey: { name: 'fk_melodies_id', allowNull: false }, foreignKeyConstraint: true });
   };
 

@@ -35,7 +35,7 @@ module.exports = (sequelize, DataType) => {
   });
 
   usersTable.associate = (models) => {
-    usersTable.hasMany(models.my_melodies, { foreignKey: { name: 'fk_users_id', allowNull: false }, foreignKeyConstraint: true });
+    usersTable.hasMany(models.my_melodies, { foreignKey: { name: 'fk_user_id', allowNull: false }, foreignKeyConstraint: true });
   };
 
   return usersTable;
