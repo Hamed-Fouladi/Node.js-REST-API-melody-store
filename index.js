@@ -21,7 +21,7 @@ app.use('/', express.static(path.join(__dirname, '/static')));
 app.use(baseApiUrl, router);
 
 app.use('*', (req, res) => {
-  res.status(404).send('Not found');
+  res.status(404).send({ message: 'Page not found!' });
 });
 
 try {
