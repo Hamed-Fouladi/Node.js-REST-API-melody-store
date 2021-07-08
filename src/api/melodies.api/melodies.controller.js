@@ -59,17 +59,16 @@ module.exports = {
   },
   getContent: async (req, res) => {
     try {
-      const now = Date.now();
       const content = await my_melodies.findAll({
         where: {
           fk_user_id: req.user.userId,
           paid_date: {
-            [Op.gt]: now,
+            [Op.gt]: Date.now(),
           },
         },
         order: [['paid_date', 'DESC']],
       });
-      res.send(content);
+      res.status(200).send(content);
     } catch (error) {
       console.log(error);
       res.status(500).send({ message: error.message });
