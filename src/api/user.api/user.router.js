@@ -1,7 +1,8 @@
 const router = require('express').Router();
 
 const {
-  getProfileData
+  getProfileData,
+  getHistory,
 } = require('./user.controller');
 const {
   jwtVerify,
@@ -9,5 +10,6 @@ const {
 
 const baseRouterPath = '/user';
 router.get(`${baseRouterPath}/profile`, jwtVerify, getProfileData);
+router.get(`${baseRouterPath}/history`, jwtVerify, getHistory);
 
 module.exports = router;
