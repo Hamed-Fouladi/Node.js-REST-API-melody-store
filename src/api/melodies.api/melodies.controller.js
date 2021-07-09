@@ -1,5 +1,5 @@
 const { Op } = require('sequelize');
-const { categories, genres, users, melodies, categories_melodies } = require('../../../database/models');
+const { categories, genres, users, melodies, categories_melodies, my_melodies } = require('../../../database/models');
 const { buyOrGiftMelody } = require('../../utils');
 
 module.exports = {
@@ -52,6 +52,23 @@ module.exports = {
       const { melodyId } = req.params;
       // buyOrGiftMelody function from utils
       await buyOrGiftMelody(req, res, { userId: id, melodyId, isGifted: true });
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({ message: error.message });
+    }
+  },
+  getContent: async (req, res) => {
+    try {
+      const content = await my_melodies.findAll({
+        where: {
+          fk_user_id: req.user.userId,
+          paid_date: {
+            [Op.gt]: Date.now(),
+          },
+        },
+        order: [['paid_date', 'DESC']],
+      });
+      res.status(200).send(content);
     } catch (error) {
       console.log(error);
       res.status(500).send({ message: error.message });

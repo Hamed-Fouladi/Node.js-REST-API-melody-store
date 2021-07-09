@@ -1,3 +1,4 @@
+const bcrypt = require('bcryptjs');
 const { users, my_melodies } = require('../../../database/models');
 
 module.exports = {
@@ -13,6 +14,22 @@ module.exports = {
     }).catch((error) => {
       res.status(500).send({ message: error.message });
     });
+  },
+  changePassword: async (req, res) => {
+    try {
+      const user = await users.findOne({
+        where: {
+          id: req.user.userId,
+        },
+      });
+      await user.update({
+        password: bcrypt.hashSync(req.body.password, 8),
+      });
+      res.status(200).send({ message: 'password was changed successfully' });
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({ message: error.message });
+    }
   },
   getHistory: async (req, res) => {
     try {
