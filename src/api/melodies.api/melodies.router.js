@@ -5,6 +5,7 @@ const {
   getMelodies,
   buyMelody,
   giftMelody,
+  getContent,
 } = require('./melodies.controller');
 const {
   jwtVerify,
@@ -15,5 +16,6 @@ router.get(`${baseRouterPath}/genres-and-categories`, jwtVerify, getGenresWithCa
 router.get(`${baseRouterPath}/category-id/:id`, jwtVerify, getMelodies);
 router.post(`${baseRouterPath}/buy-melody/:melodyId`, jwtVerify, buyMelody);
 router.post(`${baseRouterPath}/gift-melody/:melodyId`, jwtVerify, giftMelody);
+router.get(`${baseRouterPath}/get-content`, jwtVerify, getContent);
 
 module.exports = router;
