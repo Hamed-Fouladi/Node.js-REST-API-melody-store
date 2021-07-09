@@ -17,7 +17,7 @@ module.exports = {
   getHistory: async (req, res) => {
     try {
       if (isNaN(req.query.offset)) {
-        return res.status(400).send('"request query offset" should be a number!');
+        return res.status(400).send({ message: '"request query offset" should be a number!' });
       }
       if (isNaN(req.query.limit) || req.query.limit < 10) {
         req.query.limit = 10;
