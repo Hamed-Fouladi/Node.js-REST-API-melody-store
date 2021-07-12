@@ -1,5 +1,5 @@
 const bcrypt = require('bcryptjs');
-const { users } = require('../../../database/models');
+const { users, my_melodies } = require('../../../database/models');
 
 module.exports = {
   getProfileData: (req, res) => {
@@ -28,6 +28,28 @@ module.exports = {
       res.status(200).send({ message: 'password was changed successfully' });
     } catch (error) {
       console.log(error);
+      res.status(500).send({ message: error.message });
+    }
+  },
+  getHistory: async (req, res) => {
+    const offset = +req.query.offset;
+    let limit = +req.query.limit;
+    try {
+      if (isNaN(offset) || offset < 0) {
+        return res.status(400).send({ message: '"request query offset" should be a number!' });
+      }
+      if (isNaN(limit) || limit <= 0) {
+        limit = 10;
+      }
+      const history = await my_melodies.findAll({
+        where: {
+          fk_user_id: req.user.userId,
+        },
+        offset,
+        limit,
+      });
+      res.status(200).send(history);
+    } catch (error) {
       res.status(500).send({ message: error.message });
     }
   },
