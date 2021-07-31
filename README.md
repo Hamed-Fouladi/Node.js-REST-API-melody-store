@@ -1,11 +1,19 @@
-1. Install npm modules => npm install
-2. Init database => npm run init:database
-3. Start project => npm run start:dev
+## Description
+This is a REST API application on the topic of selling ringtones. I wrote this application as a graduation thesis after graduation from Telesens IT
 
-You have to have installed mysql server on your machine and just after that running above commands
+## Run project
+1. > Install npm modules 
+   >> <code>npm install</code>
+2. > You have to install mysql server on your computer and immediately after that run the below commands
+   > >mysql installation (install both server and workbench)
+   > 
+   > > download [mysql server](https://dev.mysql.com/downloads/mysql/)
+   > 
+   > > download [workbench](https://dev.mysql.com/downloads/workbench/)
 
-mysql installation (install both server and workbench)
+    >Init database 
+    >><code>npm run init:database</code>
+3. >Start project 
+   >><code>npm run start:dev</code>
 
-server => https://dev.mysql.com/downloads/mysql/
 
-workbench => https://dev.mysql.com/downloads/workbench/

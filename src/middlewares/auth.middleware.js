@@ -4,9 +4,11 @@ const { secret } = require('../../config/jwtConfig');
 const { users } = require('../../database/models');
 
 // password must be at least 5 chars long
+const confirmPassword = body('confirmPassword');
+console.log('confirmPassword: ', body.confirmPassword);
 const passwordValidation = () => body('password').exists()
   .withMessage('password is required field').isLength({ min: 5 })
-  .withMessage('must be at least 5 chars long');
+  .withMessage('must be at least 5 chars long')
 // username must be an email
 const emailValidation = () => body('email').exists()
   .withMessage('email is required field').isEmail()
