@@ -10,10 +10,19 @@ This is a REST API application on the topic of selling ringtones. I wrote this a
    > > download [mysql server](https://dev.mysql.com/downloads/mysql/)
    > 
    > > download [workbench](https://dev.mysql.com/downloads/workbench/)
+   
+   > set your database configurations at 
+   >> \database\config\config.json
 
     >Init database 
     >><code>npm run init:database</code>
 3. >Start project 
    >><code>npm run start:dev</code>
+
+   >Postman collection:
+   >>\tools\postman 
+   > 
+   >>use global variables instead environments.
+
 
 
